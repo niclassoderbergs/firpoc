@@ -1,3 +1,4 @@
+
 import React, { useMemo, useState } from 'react';
 import { pocStyles } from '../styles';
 import { 
@@ -96,13 +97,17 @@ export const FirBrpSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty }
 
     return (
         <div style={pocStyles.content}>
-            <div style={{backgroundColor: '#eae6ff', borderLeft: '4px solid #403294', padding: '16px 20px', borderRadius: '4px', marginBottom: '32px'}}>
-                <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px'}}>
-                    <FilePieChart size={20} color="#403294" />
-                    <strong style={{color: '#403294'}}>BRP Settlement: Imbalance Adjustment for {displayDate}</strong>
+            <div style={{backgroundColor: '#eae6ff', borderLeft: '4px solid #403294', padding: '24px 32px', borderRadius: '8px', marginBottom: '32px', boxShadow: '0 4px 12px rgba(64, 50, 148, 0.05)'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px'}}>
+                    <div style={{backgroundColor: '#403294', padding: '6px', borderRadius: '6px', color: 'white'}}>
+                        <FilePieChart size={20} />
+                    </div>
+                    <strong style={{color: '#403294', fontSize: '1.1rem'}}>BRP Settlement: Overview of Results ({displayDate})</strong>
                 </div>
-                <p style={{margin: 0, fontSize: '0.9rem', color: '#172b4d', lineHeight: '1.5'}}>
-                    Underlag för obalansjustering (neutralisering) per BRP för <strong>D-2 ({displayDate})</strong>. Volymen är allokerad baserat på de resurser (CU) som ingått i aktiverade portföljer.
+                <p style={{margin: 0, fontSize: '1rem', color: '#172b4d', lineHeight: '1.6'}}>
+                    This page provides an <strong>overview of Balance Responsible Party (BRP) settlement results</strong>. It displays the aggregated 
+                    volumes required for <strong>imbalance adjustment (neutralization)</strong>. This ensures that BRPs are not financially affected 
+                     by flexibility activations performed by other actors within their balance perimeter.
                 </p>
             </div>
 
@@ -119,7 +124,7 @@ export const FirBrpSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty }
                         <tr>
                             <th style={pocStyles.th}>Balance Responsible Party</th>
                             <th style={{...pocStyles.th, textAlign: 'center'}}>Affected Resources</th>
-                            <th style={{...pocStyles.th, textAlign: 'right'}}>Imbalance Correction (MWh)</th>
+                            <th style={{...pocStyles.th, textAlign: 'right'}}>Total Neutralization Volume (MWh)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -138,14 +143,14 @@ export const FirBrpSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty }
                         {pagedItems.length === 0 && (
                             <tr>
                                 <td colSpan={3} style={{...pocStyles.td, textAlign: 'center', padding: '32px', color: '#6b778c', fontStyle: 'italic'}}>
-                                    Ingen verifierad data för valt dygn.
+                                    No verified data for selected period.
                                 </td>
                             </tr>
                         )}
                     </tbody>
                     <tfoot style={{ backgroundColor: '#f4f5f7', borderTop: '2px solid #ebecf0' }}>
                         <tr>
-                            <td colSpan={2} style={{ ...pocStyles.td, fontWeight: 700, textAlign: 'right' }}>TOTAL PERIMETER ADJUSTMENT:</td>
+                            <td colSpan={2} style={{ ...pocStyles.td, fontWeight: 700, textAlign: 'right' }}>SETTLEMENT TOTALS ({displayDate}):</td>
                             <td style={{ ...pocStyles.td, textAlign: 'right', fontWeight: 800, color: '#403294' }}>{totalVolume.toFixed(3)} MWh</td>
                         </tr>
                     </tfoot>
@@ -183,6 +188,13 @@ export const FirBrpSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty }
                         </button>
                     </div>
                 </div>
+            </div>
+            
+            <div style={{marginTop: '24px', padding: '20px', backgroundColor: '#f0f7ff', borderRadius: '8px', border: '1px solid #b3d4ff', display: 'flex', gap: '16px', alignItems: 'center'}}>
+                <Info size={20} color="#0052cc" style={{flexShrink: 0}} />
+                <p style={{margin: 0, fontSize: '0.85rem', color: '#0747a6', lineHeight: '1.5'}}>
+                    <strong>Note on calculation:</strong> Neutralization volumes are calculated per individual resource (CU) by comparing the baseline to actual metered consumption/production during the activation period, then aggregated per BRP.
+                </p>
             </div>
         </div>
     );

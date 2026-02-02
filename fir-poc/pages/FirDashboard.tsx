@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { pocStyles } from '../styles';
 import { 
@@ -16,7 +17,12 @@ import {
   FileBarChart,
   TrendingUp,
   MapPin,
-  Box
+  Box,
+  Info,
+  Terminal,
+  Target,
+  UserCircle,
+  ZapOff
 } from 'lucide-react';
 import { 
   mockCUs, 
@@ -205,6 +211,97 @@ export const FirDashboard: React.FC<Props> = ({ onNavigate }) => {
 
     return (
         <div style={pocStyles.content}>
+            {/* WELCOME INFO BOX */}
+            <div style={{
+                backgroundColor: '#fff',
+                border: '1px solid #dfe1e6',
+                borderLeft: '6px solid #0052cc',
+                borderRadius: '12px',
+                padding: '32px',
+                marginBottom: '40px',
+                boxShadow: '0 4px 20px rgba(0, 82, 204, 0.08)',
+                background: 'linear-gradient(to right, #f0f7ff, #ffffff)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                    <div style={{ backgroundColor: '#0052cc', padding: '8px', borderRadius: '8px', color: 'white' }}>
+                        <Globe size={24} />
+                    </div>
+                    <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: '#172b4d' }}>
+                        Welcome to FIR POC – The Future Flexibility Register
+                    </h2>
+                </div>
+
+                <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#334155', marginBottom: '24px' }}>
+                    This platform is a Proof of Concept (POC) designed to visualize and validate the processes within the upcoming European regulatory framework for demand response (NC DR).
+                </p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                    {/* System Context & Roles */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0747a6', fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            <UserCircle size={18} /> System Context & Roles
+                        </div>
+                        <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <li>You are logged in as a <strong>Registry Administrator</strong> with full visibility of all data.</li>
+                            <li>In production, the majority of information exchange occurs via <strong>APIs</strong> directly to and from market actors' systems.</li>
+                            <li>The interface applies <strong>access control</strong> so that actors only see data relevant to their own organization.</li>
+                        </ul>
+                    </div>
+
+                    {/* Focus Areas */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#006644', fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            <Target size={18} /> Focus Areas
+                        </div>
+                        <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <li><strong>Registration & Aggregation:</strong> How resources (CUs) are linked to bidding groups (SPGs).</li>
+                            <li><strong>Qualification:</strong> Technical approval process for different markets.</li>
+                            <li><strong>Settlement:</strong> The flow from activated bid to economic distribution.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Warning / Note blocks */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '32px' }}>
+                    <div style={{ 
+                        padding: '16px 20px', 
+                        backgroundColor: '#fff7e6', 
+                        border: '1px solid #ffbb96', 
+                        borderRadius: '8px',
+                        display: 'flex',
+                        gap: '16px'
+                    }}>
+                        <ShieldAlert size={24} color="#d46b08" style={{ flexShrink: 0, marginTop: '2px' }} />
+                        <div style={{ fontSize: '0.85rem', lineHeight: '1.5', color: '#873800' }}>
+                            <strong>TEST DATA NOTE:</strong> The focus in this environment is on demonstrating processes and relationships between objects and actors. Please disregard the accuracy of specific quantitative data (volumes, number of units, etc.), as these figures are fictitious and generated solely to illustrate system logic.
+                        </div>
+                    </div>
+
+                    <div style={{ 
+                        padding: '16px 20px', 
+                        backgroundColor: '#f5f5f5', 
+                        border: '1px solid #d1d1d1', 
+                        borderRadius: '8px',
+                        display: 'flex',
+                        gap: '16px'
+                    }}>
+                        <ZapOff size={24} color="#666" style={{ flexShrink: 0, marginTop: '2px' }} />
+                        <div style={{ fontSize: '0.85rem', lineHeight: '1.5', color: '#444' }}>
+                            <strong>LOCAL FLEXIBILITY MARKETS NOTE:</strong> Local DSO-level flexibility markets are currently not implemented in this POC. In a production FIR, all resources and bids from local markets will be integrated. This enables cross-market validation to prevent double-activations and ensure that market signals do not conflict with local grid security.
+                        </div>
+                    </div>
+                </div>
+
+                <div style={{ marginTop: '24px', borderTop: '1px solid #ebecf0', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                        Created by: <strong>Niclas Söderberg</strong> (niclas.soderberg@svk.se)
+                    </div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0052cc', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Terminal size={14} /> POC VERSION 1.4.2
+                    </div>
+                </div>
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
                 <div>
                     <h1 style={{ ...pocStyles.pageTitle, marginBottom: '4px' }}>System Overview</h1>
@@ -402,7 +499,7 @@ export const FirDashboard: React.FC<Props> = ({ onNavigate }) => {
                                                         <td style={{ ...pocStyles.td, padding: '8px 12px', textAlign: 'right', fontWeight: hasActivity ? 600 : 400, color: hasActivity ? '#172b4d' : '#c1c7d0' }}>
                                                             {data.verifiedMW.toFixed(1)}
                                                         </td>
-                                                        <td style={{ ...pocStyles.td, padding: '8px 12px', textAlign: 'right', fontWeight: hasActivity ? 700 : 400, color: hasActivity ? '#0052cc' : '#c1c7d0' }}>
+                                                        <td style={{ ...pocStyles.td, padding: '8px 12px', textAlign: 'right', fontWeight: 700, color: hasActivity ? '#0052cc' : '#c1c7d0' }}>
                                                             {data.verifiedMWh.toFixed(3)}
                                                         </td>
                                                         <td style={{ ...pocStyles.td, padding: '8px 12px', textAlign: 'right', fontWeight: 800, color: hasActivity ? accuracyColor : '#c1c7d0' }}>
@@ -502,8 +599,7 @@ const styles = {
         color: '#42526e',
         textTransform: 'uppercase' as const,
         display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
+        alignItems: 'center', gap: '10px',
         borderBottom: '1px solid #ebecf0',
         paddingBottom: '12px',
         marginBottom: '12px'

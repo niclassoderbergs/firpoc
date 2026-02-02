@@ -1,3 +1,4 @@
+
 import React, { useMemo, useState } from 'react';
 import { pocStyles } from '../styles';
 import { 
@@ -97,13 +98,17 @@ export const FirReSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty })
 
     return (
         <div style={pocStyles.content}>
-            <div style={{backgroundColor: '#fffbe6', borderLeft: '4px solid #d4a017', padding: '16px 20px', borderRadius: '4px', marginBottom: '32px'}}>
-                <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px'}}>
-                    <FilePieChart size={20} color="#d4a017" />
-                    <strong style={{color: '#856404'}}>RE Settlement: Supplier Compensation for {displayDate}</strong>
+            <div style={{backgroundColor: '#fffbe6', borderLeft: '4px solid #d4a017', padding: '24px 32px', borderRadius: '8px', marginBottom: '32px', boxShadow: '0 4px 12px rgba(212, 160, 23, 0.05)'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px'}}>
+                    <div style={{backgroundColor: '#d4a017', padding: '6px', borderRadius: '6px', color: 'white'}}>
+                        <Zap size={20} />
+                    </div>
+                    <strong style={{color: '#856404', fontSize: '1.1rem'}}>RE Settlement: Overview of Results ({displayDate})</strong>
                 </div>
-                <p style={{margin: 0, fontSize: '0.9rem', color: '#172b4d', lineHeight: '1.5'}}>
-                    Aggregerat underlag för ekonomisk reglering per elleverantör för <strong>D-2 ({displayDate})</strong>. Kompensationen baseras på de enskilda resursernas (CU) verifierade leveransvolymer.
+                <p style={{margin: 0, fontSize: '1rem', color: '#172b4d', lineHeight: '1.6'}}>
+                    This page provides an <strong>overview of Retail Entity (RE / Supplier) settlement results</strong>. It displays the aggregated 
+                    <strong> verified energy volumes</strong> that serve as the basis for financial compensation to suppliers for lost revenue 
+                    due to flexibility activations in their portfolio.
                 </p>
             </div>
 
@@ -120,7 +125,7 @@ export const FirReSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty })
                         <tr>
                             <th style={pocStyles.th}>Retail Entity (Supplier)</th>
                             <th style={{...pocStyles.th, textAlign: 'center'}}>Affected Points</th>
-                            <th style={{...pocStyles.th, textAlign: 'right'}}>Compensation Basis (MWh)</th>
+                            <th style={{...pocStyles.th, textAlign: 'right'}}>Total Compensation Basis (MWh)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,10 +141,17 @@ export const FirReSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty })
                                 <td style={{...pocStyles.td, textAlign: 'right', fontWeight: 800, color: '#d97706'}}>{row.totalMWh.toFixed(3)} MWh</td>
                             </tr>
                         ))}
+                        {pagedItems.length === 0 && (
+                            <tr>
+                                <td colSpan={3} style={{...pocStyles.td, textAlign: 'center', padding: '32px', color: '#6b778c', fontStyle: 'italic'}}>
+                                    No verified data found for selected period.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                     <tfoot style={{ backgroundColor: '#f4f5f7', borderTop: '2px solid #ebecf0' }}>
                         <tr>
-                            <td colSpan={2} style={{ ...pocStyles.td, fontWeight: 700, textAlign: 'right' }}>TOTAL SUPPLIER COMPENSATION:</td>
+                            <td colSpan={2} style={{ ...pocStyles.td, fontWeight: 700, textAlign: 'right' }}>SETTLEMENT TOTALS ({displayDate}):</td>
                             <td style={{ ...pocStyles.td, textAlign: 'right', fontWeight: 800, color: '#d97706' }}>{totalVolume.toFixed(3)} MWh</td>
                         </tr>
                     </tfoot>
@@ -177,6 +189,13 @@ export const FirReSettlement: React.FC<Props> = ({ onSelectBid, onSelectParty })
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <div style={{marginTop: '24px', padding: '20px', backgroundColor: '#fafbfc', borderRadius: '8px', border: '1px solid #dfe1e6', display: 'flex', gap: '16px', alignItems: 'center'}}>
+                <Info size={20} color="#0052cc" style={{flexShrink: 0}} />
+                <p style={{margin: 0, fontSize: '0.85rem', color: '#42526e', lineHeight: '1.5'}}>
+                    <strong>Note on calculation:</strong> Compensation basis reflects the energy difference between the counterfactual baseline and the actual metered values at the accounting point level, specifically for units participating in flexibility services.
+                </p>
             </div>
         </div>
     );

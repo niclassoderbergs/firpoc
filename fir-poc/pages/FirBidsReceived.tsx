@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { pocStyles } from '../styles';
-import { Gavel, CheckCircle2, AlertTriangle, Link2, Clock, BarChart3, Info, MapPin, Zap, Calendar, TrendingUp, ChevronLeft, ChevronRight, ShieldAlert } from 'lucide-react';
+import { Gavel, CheckCircle2, AlertTriangle, Link2, Clock, BarChart3, Info, MapPin, Zap, Calendar, TrendingUp, ChevronLeft, ChevronRight, ShieldAlert, Lightbulb } from 'lucide-react';
 import { mockBids, mockCUs, mockMarketStats } from '../mockData';
 
 const PAGE_SIZE = 20;
@@ -55,7 +55,7 @@ const styles = {
     }
 };
 
-// Synkroniserat med produkt-id i mockData
+// Synced with product-ids in mockData
 const PRODUCTS = ['mFRR', 'aFRR', 'FCR-N', 'FCR-D-UP', 'FCR-D-DOWN', 'LOCAL-FLEX'];
 
 const PRODUCT_DISPLAY_NAMES: Record<string, string> = {
@@ -64,7 +64,7 @@ const PRODUCT_DISPLAY_NAMES: Record<string, string> = {
     'FCR-N': 'FCR-N',
     'FCR-D-UP': 'FCR-D Up',
     'FCR-D-DOWN': 'FCR-D Down',
-    'LOCAL-FLEX': 'Lokal Flex'
+    'LOCAL-FLEX': 'Local Flex'
 };
 
 export const FirBidsReceived: React.FC<Props> = ({ onSelectBid, onSelectSPG, onSelectParty }) => {
@@ -163,8 +163,11 @@ export const FirBidsReceived: React.FC<Props> = ({ onSelectBid, onSelectSPG, onS
                         </div>
                     </td>
                     <td style={{...pocStyles.td, textAlign: 'right'}}>
+                        <span style={{fontWeight: 700, color: '#6b778c'}}>{bid.availableCapacityMW.toFixed(1)} MW</span>
+                    </td>
+                    <td style={{...pocStyles.td, textAlign: 'right'}}>
                         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
-                            <span style={{fontWeight: 800, color: '#172b4d'}}>{bid.volumeMW.toFixed(1)} MW</span>
+                            <span style={{fontWeight: 800, color: isOverbid ? '#bf2600' : '#172b4d'}}>{bid.volumeMW.toFixed(1)} MW</span>
                             {marketStat && (
                                 <div style={styles.marketHint} title="Average bid size in the Swedish market for this product">
                                     <TrendingUp size={10} /> Mkt Avg: {marketStat.avgBidSizeMW} MW
@@ -178,7 +181,7 @@ export const FirBidsReceived: React.FC<Props> = ({ onSelectBid, onSelectSPG, onS
                                 ...styles.statusBadge,
                                 backgroundColor: isValid ? '#e3fcef' : '#ffebe6',
                                 color: isValid ? '#006644' : '#bf2600',
-                                border: `1px solid ${isValid ? '#36b37e' : '#ffbdad'}50`,
+                                border: `1px solid ${isValid ? '#36b37e' : '#ff5630'}50`,
                                 width: 'fit-content'
                             }}>
                                 {isValid ? <CheckCircle2 size={12} /> : <AlertTriangle size={12} />}
@@ -198,14 +201,17 @@ export const FirBidsReceived: React.FC<Props> = ({ onSelectBid, onSelectSPG, onS
 
     return (
         <div style={pocStyles.content}>
-            <div style={{backgroundColor: '#e6effc', borderLeft: '4px solid #0052cc', padding: '16px 20px', borderRadius: '4px', marginBottom: '32px'}}>
-                <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px'}}>
-                    <Info size={20} color="#0052cc" />
-                    <strong style={{color: '#0747a6'}}>BRS-FLEX-7010: Automated Capacity Check</strong>
+            <div style={{backgroundColor: '#e6effc', borderLeft: '4px solid #0052cc', padding: '24px 32px', borderRadius: '8px', marginBottom: '40px', boxShadow: '0 4px 12px rgba(0, 82, 204, 0.08)'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px'}}>
+                    <div style={{ backgroundColor: '#0052cc', padding: '6px', borderRadius: '6px', color: 'white' }}>
+                        <Lightbulb size={20} />
+                    </div>
+                    <strong style={{color: '#0747a6', fontSize: '1.1rem'}}>CONCEPT PROPOSAL — BRS-FLEX-7010: Automated Capacity Check</strong>
                 </div>
-                <p style={{margin: 0, fontSize: '0.9rem', color: '#172b4d', lineHeight: '1.5'}}>
-                    Bids received are automatically validated against the <strong>aggregated theoretical capacity</strong> of all underlying resources (CUs) currently linked to the group. 
-                    System also cross-references with <strong>BRS-FLEX-401</strong> (Grid Constraints) in real-time.
+                <p style={{margin: 0, fontSize: '1rem', color: '#172b4d', lineHeight: '1.6'}}>
+                    This is a conceptual proposal on how <strong>FIR can assist TSOs and DSOs</strong> in effectively controlling the bids they receive. 
+                    Incoming bids are automatically validated against the <strong>aggregated technical capacity</strong> of the resources (CUs) included in the portfolio. 
+                    The system also cross-references with <strong>BRS-FLEX-401</strong> (Grid Constraints) in real-time to ensure operational security before the bid is accepted on the market.
                 </p>
             </div>
 
@@ -222,6 +228,7 @@ export const FirBidsReceived: React.FC<Props> = ({ onSelectBid, onSelectSPG, onS
                             <th style={pocStyles.th}>Product</th>
                             <th style={pocStyles.th}>Bid Zone</th>
                             <th style={pocStyles.th}>Period</th>
+                            <th style={{...pocStyles.th, textAlign: 'right'}}>Available (MW)</th>
                             <th style={{...pocStyles.th, textAlign: 'right'}}>Bid (MW)</th>
                             <th style={pocStyles.th}>Status</th>
                         </tr>
@@ -280,6 +287,7 @@ export const FirBidsReceived: React.FC<Props> = ({ onSelectBid, onSelectSPG, onS
                                         <th style={pocStyles.th}>Reference</th>
                                         <th style={pocStyles.th}>Portfolio (SPG)</th>
                                         <th style={pocStyles.th}>Period</th>
+                                        <th style={{...pocStyles.th, textAlign: 'right'}}>Available (MW)</th>
                                         <th style={{...pocStyles.th, textAlign: 'right'}}>Bid (MW)</th>
                                         <th style={pocStyles.th}>Status</th>
                                     </tr>
